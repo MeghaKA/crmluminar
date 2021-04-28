@@ -4,7 +4,7 @@ from .forms import Login
 # Create your views here.
 def register(request):
     return render(request,"crm/register.html")
-def login(request):
+def Login(request):
     form=Login()
     context={}
     context["form"]=form
@@ -16,5 +16,5 @@ def login(request):
             return redirect("register")
         else:
             context["form"]=form
-            return render(request,"crm/login.html",context)
-        return render(request, "crm/login.html", context)
+            return render(request,"crm/Login.html",context)
+        return render(request, "crm/Login.html", context)
