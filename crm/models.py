@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 class Course(models.Model):
     course_name=models.CharField(max_length=50,unique=True)
     course_duration=models.CharField(max_length=50)
@@ -10,7 +10,7 @@ class Course(models.Model):
 class Batch(models.Model):
     batch_code=models.CharField(max_length=50,unique=True)
     course=models.ForeignKey(Course,on_delete=models.CASCADE)
-    batch_date=models.DateField()
+    batch_date=models.DateField(auto_now=True)
     course_fees=models.CharField(max_length=50)
     action=(
         ('1','Yet to begin'),
@@ -23,7 +23,7 @@ class Batch(models.Model):
         return self.batch_code
 
 class Enquiry(models.Model):
-    enquiryid=models.CharField(primary_key=True,editable=False)
+    enquiryid=models.CharField(max_length=100,primary_key=True,editable=False)
     studentname=models.CharField(max_length=100)
     address=models.TextField()
     qualification=models.CharField(max_length=50)
@@ -32,8 +32,8 @@ class Enquiry(models.Model):
     batch=models.ForeignKey(Batch,on_delete=models.CASCADE)
     contact=models.IntegerField()
     email=models.EmailField(unique=True)
-    enquirydate=models.DateField()
-    followup_date=models.DateField()
+    enquirydate=models.DateField(auto_now=True)
+    followup_date=models.DateField(auto_now=True)
     action=(
         ('1','Call_back'),
         ('2','Admitted'),
@@ -46,10 +46,10 @@ class Enquiry(models.Model):
 
 class Admission(models.Model):
     admission_no=models.CharField(max_length=50,unique=True)
-    enquiryid=models.CharField(max_length=50)
-    coursefees=models.IntegerField()
-    batchcode=models.ForeignKey(Batch,on_delete=models.CASCADE)
-    date=models.DateField()
+    enquiry_id=models.CharField(max_length=50)
+    course_fees=models.IntegerField()
+    batch_code=models.ForeignKey(Batch,on_delete=models.CASCADE)
+    date=models.DateField(auto_now=True)
 
     def __str__(self):
         return self.admission_no
@@ -57,7 +57,7 @@ class Admission(models.Model):
 class Payment(models.Model):
     admission_no=models.CharField(max_length=50)
     amount=models.IntegerField()
-    payment_date=models.DateField()
+    payment_date=models.DateField(auto_now=True)
     enquiryid=models.CharField(max_length=50)
 
     def __str__(self):
